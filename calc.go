@@ -1,56 +1,56 @@
-пакет главный
+package main
 
-импорт (
-	«Bufio»
-	«FMT»
-	"Ос"
+import (
+	"bufio"
+	"fmt"
+	"os"
 	"strconv"
-	«струны»
+	"strings"
 )
 
-// Карта княжеская княгиня в Арабские
-вар romanNumerals = карта[строка]int{
-	"Я": 1, «V»: 5, «Х»: 10, «L»: 50, «С»: 100, «D»: 500, «М»: 1000,
+// Карта для преобразования Римских чисел в Арабские
+var romanNumerals = map[string]int{
+	"I": 1, "V": 5, "X": 10, "L": 50, "C": 100, "D": 500, "M": 1000,
 }
 
-// Срез Структур княжеская Арабских чисел в Римских
-вар arabicToRoman = []struct {
-Ценность int
-Символ строка
-} {
-	{1000, «М»}, {900, «CM»}, {500, «D»}, {400, «CD»},
-	{100, «С»}, {90, «XC»}, {50, «L»}, {40, «XL»},
-	{10, «Х»}, {9, «IX»}, {5, «V»}, {4, "IV"}, {1, "Я"},
+// Срез структур для преобразования Арабских чисел в Римские
+var arabicToRoman = []struct {
+	Value  int
+	Symbol string
+}{
+	{1000, "M"}, {900, "CM"}, {500, "D"}, {400, "CD"},
+	{100, "C"}, {90, "XC"}, {50, "L"}, {40, "XL"},
+	{10, "X"}, {9, "IX"}, {5, "V"}, {4, "IV"}, {1, "I"},
 }
 
-// Преобразное римской цифры в Целое щело
-фанк romanToInt (s строка) int {
-п: = 0
-	для я : = 0; я < лен(ы); i ++ {
-		если я +1 < лен(s) & romanNumerals [строка(s [i])] <romanNumerals [строка(S [I +1])] {
-n - = romanNumerals [строка(S [i])]
-		} еще {
-n + = romanNumerals [строка(S [i])]
+// Преобразование римской цифры в целое число
+func romanToInt(s string) int {
+	n := 0
+	for i := 0; i < len(s); i++ {
+		if i+1 < len(s) && romanNumerals[string(s[i])] < romanNumerals[string(s[i+1])] {
+			n -= romanNumerals[string(s[i])]
+		} else {
+			n += romanNumerals[string(s[i])]
 		}
 	}
-	возвращение n
+	return n
 }
 
-// Преобразуецелого числа в Римскую црифру
-фанк intToRoman (Num int) строка {
-	вар результат строки.Строитель
-	для _, r: = диапазон arabicToRoman {
-		для num> = r.Значение {
-результат.WriteString (р.Символ)
-Num - = r.Ценность 
+// Преобразование целого числа в римскую цифру
+func intToRoman(num int) string {
+	var result strings.Builder
+	for _, r := range arabicToRoman {
+		for num >= r.Value {
+			result.WriteString(r.Symbol)
+			num -= r.Value
 		}
 	}
-	возвращение результат.String ()
+	return result.String()
 }
 
-// Преверка - является ли стока допустимой Римской цифрой
-фанк isRoman (с строка) бул {
-	для _, r: = диапазон с {
+// Проверка - является ли строка допустимой римской цифрой
+func isRoman(s string) bool {
+	for _, r := range s {
 		if _, exists := romanNumerals[string(r)]; !exists {
 			return false
 		}
@@ -79,56 +79,56 @@ func main() {
 	isRomanInput := isRoman(aStr) && isRoman(bStr)
 	isArabicInput := !isRoman(aStr) && !isRoman(bStr)
 
-	если isRomanInput && !isArabicInput {!
-		паника("Смешиване Римских и Арабских Цифр")
+	if !isRomanInput && !isArabicInput {
+		panic("Смешивание римских и арабских цифр")
 	}
 
-	вар а, б, результат int
+	var a, b, result int
 
-	если isRomanInput {
-a = romanToInt (aStr)
-b = romanToInt (bStr)
-	} еще {
-		вар ошибаться ошибка
-a, err = strconv.Atoi (aStr)
-		если ошибаться != ноль {
-			паника("Неверный формат числа")
+	if isRomanInput {
+		a = romanToInt(aStr)
+		b = romanToInt(bStr)
+	} else {
+		var err error
+		a, err = strconv.Atoi(aStr)
+		if err != nil {
+			panic("Неверный формат числа")
 		}
-б, эээ = стрконв.Atoi (bStr)
-		если ошибаться != ноль {
-			паника("Неверный формат числа")
+		b, err = strconv.Atoi(bStr)
+		if err != nil {
+			panic("Неверный формат числа")
 		}
 	}
-	если а < 1 || а> 10 || б < 1 || б> 10 {
-		паника("Числа дольжны в 1 до 10 вклучительно")
+	if a < 1 || a > 10 || b < 1 || b > 10 {
+		panic("Числа должны быть в диапазоне от 1 до 10 включительно")
 	}
 
-	// Вычислаем выраценье
-pereklüchatelь op {
-Дело «+»:
-резултат = а + б
-Дело «-»:
-резултат = а - б
-Дело «*» :
-резултат = а * б
-Дело «/»:
-Эсли б == 0 {
-panika ("Деление на ноль")
+	// Вычисляем выражение
+	switch op {
+	case "+":
+		result = a + b
+	case "-":
+		result = a - b
+	case "*":
+		result = a * b
+	case "/":
+		if b == 0 {
+			panic("Деление на ноль")
 		}
-резултат = а / б
-по умольчанию :
-паника ("Неверная операция")
+		result = a / b
+	default:
+		panic("Неверная операция")
 	}
 
-	// Преверка резултата для Римских цифр
-	если isRomanInput & result < 1 {
-паника ("Результат меньше единицы для Римских чисел")
+	// Проверка результата для римских цифр
+	if isRomanInput && result < 1 {
+		panic("Результат меньше единицы для римских чисел")
 	}
 
 	// Вывод
-Эсли isRomanInput {
-фмт.Println (intToRoman (перезултат))
-} еще {
-фмт.Println (перезультат)
+	if isRomanInput {
+		fmt.Println(intToRoman(result))
+	} else {
+		fmt.Println(result)
 	}
 }
