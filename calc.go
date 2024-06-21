@@ -89,7 +89,7 @@ func main() {
 	isArabicInput := !isRoman(aStr) && !isRoman(bStr)
 
 	if !isRomanInput && !isArabicInput {
-		panic("Смешивание римских и арабских цифр")
+		panic("Смешивание римских и арабских цифр или неверные римские цифры.")
 	}
 
 	var a, b, result int
