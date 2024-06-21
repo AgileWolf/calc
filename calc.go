@@ -55,7 +55,16 @@ func isRoman(s string) bool {
 			return false
 		}
 	}
-	return true
+	return isValidRoman(s)
+}
+
+// Проверка на корректность римских цифр от 1 до 10
+func isValidRoman(s string) bool {
+	validRomans := map[string]bool{
+		"I": true, "II": true, "III": true, "IV": true, "V": true,
+		"VI": true, "VII": true, "VIII": true, "IX": true, "X": true,
+	}
+	return validRomans[s]
 }
 
 func main() {
